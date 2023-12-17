@@ -1,12 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid, GridRenderCellParams } from "@mui/x-data-grid";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import { People } from "@/data/people";
 import { Person } from "@/models";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addFavorite } from "@/redux/states";
+import { addFavorite, addPeople } from "@/redux/states";
+import store from "@/redux/store";
 
 export type HomeProps = {
   // types...
@@ -64,9 +65,15 @@ const Home: React.FC<HomeProps> = () => {
       renderCell: (params: GridRenderCellParams) => <>{params.value}</>,
     },
   ];
+
+  useEffect(() => {
+    dispatch(addPeople(People));
+  }, [])
+  
+
   return (
     <DataGrid
-      rows={People}
+      rows={store.getState().people}
       columns={columns}
       disableColumnSelector
       disableRowSelectionOnClick
