@@ -3,19 +3,19 @@ import { Person } from '@/models';
 import { addFavorite } from '@/redux/states';
 import { AppStore } from '@/redux/store';
 import { Checkbox } from '@mui/material';
-import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
+import { GridRenderCellParams, DataGrid } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export type PeopleTableProps = {
+export type FavoriteTableProps = {
 	// types...
 }
 
-const PeopleTable: React.FC<PeopleTableProps>  = () => {
+const FavoriteTable: React.FC<FavoriteTableProps>  = () => {
 	const [selectedPeople, setSelectedPeople] = useState<Person[]>([])
   const pageSize = 5;
   const dispatch = useDispatch()
-  const statePeople = useSelector((store: AppStore) => store.people)
+  const stateFavorite = useSelector((store: AppStore) => store.favorites)
 	const findPerson = (person: Person) => !!selectedPeople.find(p => p.id === person.id)
 	const filterPerson = (person: Person) => selectedPeople.find(p => p.id !== person.id)
   
@@ -69,7 +69,7 @@ const PeopleTable: React.FC<PeopleTableProps>  = () => {
 	
 	return (
 			<DataGrid
-      rows={statePeople}
+      rows={stateFavorite}
       columns={columns}
       disableColumnSelector
       disableRowSelectionOnClick
@@ -81,4 +81,4 @@ const PeopleTable: React.FC<PeopleTableProps>  = () => {
 	);
 };
 
-export default PeopleTable;
+export default FavoriteTable;
