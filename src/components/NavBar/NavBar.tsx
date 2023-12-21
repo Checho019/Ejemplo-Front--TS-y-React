@@ -4,13 +4,15 @@ import React from 'react';
 import { CustomDialog, FavoriteTable } from '..';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { dialogOpenSubject$ } from '../CustomDialog/CustomDialog';
+import { useSelector } from 'react-redux';
+import { AppStore } from '@/redux/store';
 
 export type NavBarProps = {
 	// types...
 }
 
 const NavBar: React.FC<NavBarProps>  = () => {
-	
+	const stateFavorites = useSelector((store: AppStore) => store.favorites);
 	const handleClick = () => dialogOpenSubject$.setSubject = true;
 
 	return (
@@ -23,7 +25,7 @@ const NavBar: React.FC<NavBarProps>  = () => {
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 					About yout Happiness
 				</Typography>
-				<IconButton component="label" aria-label='Favorites' onClick={handleClick}>
+				<IconButton aria-label='Favorites' onClick={handleClick}>
 					<FavoriteIcon color='error' />
 				</IconButton>
 			</Toolbar>

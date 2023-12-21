@@ -1,30 +1,24 @@
 "use client";
 import { Person } from '@/models';
-import { addFavorite } from '@/redux/states';
+import { removeFavorite } from '@/redux/states';
 import { AppStore } from '@/redux/store';
-import { Checkbox } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { GridRenderCellParams, DataGrid } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 export type FavoriteTableProps = {
 	// types...
 }
 
 const FavoriteTable: React.FC<FavoriteTableProps>  = () => {
-	const [selectedPeople, setSelectedPeople] = useState<Person[]>([])
   const pageSize = 5;
   const dispatch = useDispatch()
   const stateFavorite = useSelector((store: AppStore) => store.favorites)
-	const findPerson = (person: Person) => !!selectedPeople.find(p => p.id === person.id)
-	const filterPerson = (person: Person) => selectedPeople.find(p => p.id !== person.id)
   
-	const handleChange = (person: Person) => {
-    const filteredPeople = findPerson(person) 
-    ? filterPerson(person) 
-    : [...selectedPeople, person];
-    dispatch(addFavorite(filteredPeople));
-    setSelectedPeople(filteredPeople);
+	const handleClick = (person: Person) => {
+    dispatch(removeFavorite(person));
 	}
 
   const columns = [
@@ -34,8 +28,10 @@ const FavoriteTable: React.FC<FavoriteTableProps>  = () => {
       width: 50,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => <>{
-				<Checkbox size="small" checked={findPerson(params.row)} onChange={() => handleChange(params.row)} />
-			}</>,
+        <IconButton aria-label='Favorites' onClick={() => handleClick(params.row)}>
+					<RemoveIcon color='error' />
+				</IconButton>
+        }</>,
     },
     {
       field: "name",
